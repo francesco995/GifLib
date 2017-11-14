@@ -2,6 +2,8 @@ package com.teamtreehouse.giflib.data;
 
 
 import com.teamtreehouse.giflib.model.Gif;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.util.List;
 @Component
 public class GifRepository {
 
+    private static final Logger logger = LoggerFactory.getLogger(GifRepository.class);
+
     private static final List<Gif> ALL_GIFS = Arrays.asList(
             new Gif("android-explosion", 3, LocalDate.of(2015,2,13), "Chris Ramacciotti", false),
             new Gif("ben-and-mike", 2, LocalDate.of(2015,10,30), "Ben Jakuben", true),
@@ -21,14 +25,23 @@ public class GifRepository {
             new Gif("infinite-andrew",2, LocalDate.of(2015,8,23), "Marissa Mayer", true)
     );
 
+    public GifRepository() {
+        logger.info("Created Gif Repository");
+    }
+
 
     public Gif findByName(String name){
 
+        logger.info("Searching Gif: " + name);
+
         for (Gif gif : ALL_GIFS) {
             if(gif.getName().equals(name)) {
+                logger.info("Found Gif: " + gif);
                 return gif;
             }
         }
+
+        logger.error("No Gif found, returning NULL!");
 
         return null;
 
